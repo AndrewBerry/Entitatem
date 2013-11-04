@@ -26,3 +26,7 @@ manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to
 ```
 This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
 
+```
+// eg.
+manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System( COMP1_MASK | COMP2_MASK ) );
+```

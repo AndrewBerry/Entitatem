@@ -19,7 +19,7 @@ Entitatem::uint64 COMP2_MASK = manager.RegisterComponent< Component2 >(); // wil
 Entitatem::uint64 COMP3_MASK = manager.RegisterComponent< Component3 >(); // will return 3 [0..100]
 ```
 These component masks are used to signify which components are in-use for an entity and the requirement mask for each system.
-When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask.
+When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask (if no mask is specified (0u us passed as the mask) then the system is classified as a `Global System` instead of an `Entity System` - Global systems are only executed once per update and not on any particular entity).
 
 ```
 // eg.

@@ -8,7 +8,7 @@ Component-entity-systems are an easy and manageable way to break away from old f
 
 For an example of how to use Entitatem, see [wiki/ecs-example1](https://github.com/AndrewBerry/Entitatem/wiki/ecs_example1).
 
-Components, Systems and Masking
+Component and System Masking
 =========
 Component masks are generated when a component is registered with an `Entitatem::Manager`.
 

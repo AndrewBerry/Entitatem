@@ -23,11 +23,11 @@ When registering a system, if a system mask is specified, the system will only b
 
 ```
 // eg.
-manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System( COMP1_MASK | COMP2_MASK ) );
+manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System1( COMP1_MASK | COMP2_MASK ) );
 ```
 This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
 ```
 // eg.
-manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101].
+manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101] <- System 1 will be executed on this entity
 ```
 

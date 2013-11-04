@@ -38,3 +38,4 @@ manager.SetEntityMask( 2u, COMP1_MASK | COMP2_MASK | COMP3_MASK ); // sets entit
 // System 1 will be executed on this entity ^
 ```
 
+As you can see, the entity mask does not have to match the system mask exactly. The system will be executed if all of the system mask bits are set in the entity mask.

@@ -28,6 +28,13 @@ manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System1( COMP1_MASK | COMP
 This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
 ```
 // eg.
-manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101] <- System 1 will be executed on this entity
+manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101]
+// System 1 will be executed on this entity ^
+
+manager.SetEntityMask( 1u, COMP1_MASK | COMP2_MASK ); // sets entity 1's mask to 3 [0..011]
+// System 1 will NOT be executed on this entity ^
+
+manager.SetEntityMask( 2u, COMP1_MASK | COMP2_MASK | COMP3_MASK ); // sets entity 2's mask to 7 [0..111]
+// System 1 will be executed on this entity ^
 ```
 

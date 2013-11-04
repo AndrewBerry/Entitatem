@@ -19,14 +19,15 @@ Entitatem::uint64 COMP2_MASK = manager.RegisterComponent< Component2 >(); // wil
 Entitatem::uint64 COMP3_MASK = manager.RegisterComponent< Component3 >(); // will return 3 [0..100]
 ```
 These component masks are used to signify which components are in-use for an entity and the requirement mask for each system.
-
-```
-// eg.
-manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101].
-```
-This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
+When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask.
 
 ```
 // eg.
 manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System( COMP1_MASK | COMP2_MASK ) );
 ```
+This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
+```
+// eg.
+manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101].
+```
+

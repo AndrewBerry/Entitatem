@@ -65,6 +65,17 @@ namespace Entitatem {
 
         return m_entityMaxCount;
     };
+    
+    // ------------------------------------------------------------------------
+    uint32 Manager::GetLastUnusedEntity() {
+        for ( uint32 id = m_entityMaxCount - 1u; id >= 0u; --id ) {
+            if ( GetEntityMask( id ) == 0u ) {
+                return id;
+            };
+        };
+
+        return m_entityMaxCount;
+    };
 
     // ------------------------------------------------------------------------
     void Manager::RegisterSystem( const SystemType& a_type, System* a_system ) {

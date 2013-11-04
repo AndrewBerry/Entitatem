@@ -8,13 +8,21 @@ Component-entity-systems are an easy and manageable way to break away from old f
 
 For an example of how to use Entitatem, see [wiki/ecs-example1](https://github.com/AndrewBerry/Entitatem/wiki/ecs_example1).
 
-Components
+Components, Systems and Masking
 =========
+Component masks are generated when a component is registered with an Entitatem::Manager.
 
+```
+// eg.
+Entitatem::uint64 COMP1_MASK = manager.RegisterComponent< Component1 >(); // will return 1 [0..001]
+Entitatem::uint64 COMP2_MASK = manager.RegisterComponent< Component2 >(); // will return 2 [0..010]
+Entitatem::uint64 COMP3_MASK = manager.RegisterComponent< Component3 >(); // will return 3 [0..100]
+```
+These component masks are used to signify which components are in-use for an entity and the requirement mask for each system.
 
+```
+// eg.
+manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101].
+```
+This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
 
-BitMasking and Auto-Attaching Systems
-=========
-When registering a Component type with an Entitatem::Manager, a bitmask is returned (of type Entitatem::uint64).
-An entity is represented by and ID and a mask. The entity masks are an indicator of which components are in-use for a particular entity.
-With each system that is registered, a required mask value is stored as the minimum requirement that each entity mask has to match before the system is executed.

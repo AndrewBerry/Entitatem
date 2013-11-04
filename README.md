@@ -10,7 +10,7 @@ For an example of how to use Entitatem, see [wiki/ecs-example1](https://github.c
 
 Components, Systems and Masking
 =========
-Component masks are generated when a component is registered with an Entitatem::Manager.
+Component masks are generated when a component is registered with an `Entitatem::Manager`.
 
 ```
 // eg.
@@ -19,13 +19,13 @@ Entitatem::uint64 COMP2_MASK = manager.RegisterComponent< Component2 >(); // wil
 Entitatem::uint64 COMP3_MASK = manager.RegisterComponent< Component3 >(); // will return 3 [0..100]
 ```
 These component masks are used to signify which components are in-use for an entity and the requirement mask for each system.
-When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask (if no mask is specified (0u us passed as the mask) then the system is classified as a `Global System` instead of an `Entity System` - Global systems are only executed once per update and not on any particular entity).
+When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask (if no mask is specified (0u us passed as the mask) then the system is classified as a global system instead of an entity system - Global systems are only executed once per update and not on any particular entity).
 
 ```
 // eg.
 manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System1( COMP1_MASK | COMP2_MASK ) );
 ```
-This means any system that requires a Component1 and Component2 will automatically be executed on this entity.
+This means any system that requires a `Component1` and `Component2` will automatically be executed on this entity.
 ```
 // eg.
 manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101]

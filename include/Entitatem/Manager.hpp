@@ -22,9 +22,9 @@ namespace Entitatem {
         void                        ExecuteRenderSystems();
 
         // entities
-        uint32                        GetUnusedEntity();
+        uint32                      GetUnusedEntity();
         inline const uint32&        GetEntityMaxCount() { return m_entityMaxCount; };
-        inline void                    SetEntityMask( const uint32& a_id, const uint64& a_mask ) { m_entityMasks[ a_id ] = a_mask; };
+        inline void                 SetEntityMask( const uint32& a_id, const uint64& a_mask ) { m_entityMasks[ a_id ] = a_mask; };
         inline const uint64&        GetEntityMask( const uint32& a_id ) { return m_entityMasks[ a_id ]; };
 
         // systems
@@ -32,19 +32,19 @@ namespace Entitatem {
 
         // components
         template < class T >
-        const uint64&                RegisterComponent();
+        const uint64&               RegisterComponent();
         template < class T >
-        uint64                        GetComponentMask();
+        uint64                      GetComponentMask();
         template < class T >
-        T*                            GetComponentData( const uint32& a_id );
+        T*                          GetComponentData( const uint32& a_id );
 
     private:
         // entities
         const uint32                m_entityMaxCount;
-        std::unique_ptr< uint64[] >    m_entityMasks;
+        std::unique_ptr< uint64[] > m_entityMasks;
 
         // systems
-        SystemsMap                    m_systems;
+        SystemsMap                  m_systems;
         SystemsMap::iterator        m_updateSystems, m_renderSystems;
 
         // components

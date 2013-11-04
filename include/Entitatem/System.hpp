@@ -26,15 +26,15 @@ namespace Entitatem {
         inline const uint32&        GetDelay() const { return m_delay; };
 
     private:
-        uint64                        m_mask;
-        uint32                        m_delay;
+        uint64                      m_mask;
+        uint32                      m_delay;
 
     };
     
     // ------------------------------------------------------------------------
     struct SystemMeta {
-        std::shared_ptr< System >    m_system;
-        uint32                        m_skippedFrames;
+        std::shared_ptr< System >   m_system;
+        uint32                      m_skippedFrames;
 
     };
 

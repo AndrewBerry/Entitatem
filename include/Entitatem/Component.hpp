@@ -10,14 +10,14 @@ namespace Entitatem {
     // ------------------------------------------------------------------------
     class Component {
     public:
-        virtual                        ~Component();
+        virtual                     ~Component();
 
     };
     
     // ------------------------------------------------------------------------
     struct ComponentMeta {
         std::shared_ptr< Component > m_data;
-        uint64                        m_mask;
+        uint64                     m_mask;
 
     };
 

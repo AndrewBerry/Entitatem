@@ -23,7 +23,7 @@ namespace Entitatem {
 
         // entities
         uint32                      GetUnusedEntity();
-		uint32                      GetLastUnusedEntity();
+        uint32                      GetLastUnusedEntity();
         inline const uint32&        GetEntityMaxCount() { return m_entityMaxCount; };
         inline void                 SetEntityMask( const uint32& a_id, const uint64& a_mask ) { m_entityMasks[ a_id ] = a_mask; };
         inline const uint64&        GetEntityMask( const uint32& a_id ) { return m_entityMasks[ a_id ]; };

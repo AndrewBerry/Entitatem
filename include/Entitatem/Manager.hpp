@@ -46,7 +46,6 @@ namespace Entitatem {
 
         // systems
         SystemsMap                  m_systems;
-        SystemsMap::iterator        m_updateSystems, m_renderSystems;
 
         // components
         ComponentMap                m_components;

@@ -15,7 +15,8 @@ namespace Entitatem {
     
     // ------------------------------------------------------------------------
     void Manager::ExecuteUpdateSystems() {
-        for ( auto system = m_updateSystems; system != m_renderSystems; ++system ) {
+        auto range = m_systems.equal_range( Entitatem::SYSTEM_UPDATE );
+        for ( auto system = range.first; system != range.second; ++system ) {
             system->second.m_skippedFrames++;
 
             if ( system->second.m_skippedFrames >= system->second.m_system->GetDelay() ) {
@@ -36,7 +37,8 @@ namespace Entitatem {
     
     // ------------------------------------------------------------------------
     void Manager::ExecuteRenderSystems() {
-        for ( auto system = m_renderSystems; system != m_systems.end(); ++system ) {
+        auto range = m_systems.equal_range( Entitatem::SYSTEM_RENDER );
+        for ( auto system = range.first; system != range.second; ++system ) {
             system->second.m_skippedFrames++;
 
             if ( system->second.m_skippedFrames >= system->second.m_system->GetDelay() ) {
@@ -84,8 +86,6 @@ namespace Entitatem {
         metaData.m_skippedFrames = 0u;
 
         m_systems.insert( std::pair< SystemType, SystemMeta >( a_type, metaData ) );
-        m_updateSystems = m_systems.find( SYSTEM_UPDATE );
-        m_renderSystems = m_systems.find( SYSTEM_RENDER );
     };
 
 };

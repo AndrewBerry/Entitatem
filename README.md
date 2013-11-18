@@ -1,41 +1,22 @@
 Entitatem
 =========
 
-*View the lastest version download information [in the release tab](https://github.com/AndrewBerry/Entitatem/releases).*
+*View the lastest version download information [in the release tab](/releases).*
 
 Entitatem is a light weight framework that allows developers to easily manage entities and game logic.
 Component-entity-systems are an easy and manageable way to break away from old fashioned rigid class hierarchies. Boreal Games has a great explanation of component based entity systems [here](http://www.gamedev.net/page/resources/_/technical/game-programming/understanding-component-entity-systems-r3013).
 
-For an example of how to use Entitatem, see [wiki/ecs-example1](https://github.com/AndrewBerry/Entitatem/wiki/ecs_example1).
+>Entities are your game objects, which are implicitly defined by a collection of components. These components are pure data and are operated on in functional groups by the systems.
 
-Component and System Masking
+System Types
 =========
-Component masks are generated when a component is registered with an `Entitatem::Manager`.
+Systems are split up into two types, Global Systems and Entity Systems. The system type is determined by the Component Requirements - Systems with ANY requirements are classified as Entity Systems and systems without requirements are classified as Global Systems.
 
-```
-// eg.
-Entitatem::uint64 COMP1_MASK = manager.RegisterComponent< Component1 >(); // will return 1 [0..001]
-Entitatem::uint64 COMP2_MASK = manager.RegisterComponent< Component2 >(); // will return 2 [0..010]
-Entitatem::uint64 COMP3_MASK = manager.RegisterComponent< Component3 >(); // will return 3 [0..100]
-```
-These component masks are used to signify which components are in-use for an entity and the requirement mask for each system.
-When registering a system, if a system mask is specified, the system will only be executed on entities matching this system mask. If no mask is specified (0u is passed) then the system is classified as a global system instead of an entity system - Global systems are only executed once per update and not on any particular entity.
+System Type | Function Called
+--- | ---
+Global System | `System::Execute()`
+Entity System | `System::Execute( const size_t& a_id )`*
 
-```
-// eg.
-manager.RegisterSystem( Entitatem::SYSTEM_UPDATE, new System1( COMP1_MASK | COMP3_MASK ) );
-```
-`System1` requires a `Component1` mask and a `Component2` mask to be present before it is executed on any particular entity.
-```
-// eg.
-manager.SetEntityMask( 0u, COMP1_MASK | COMP3_MASK ); // sets entity 0's mask to 5 [0..101]
-// System1 will be executed on this entity ^
+*`a_id` is the ID of the entity the system is being executed on.
 
-manager.SetEntityMask( 1u, COMP1_MASK | COMP2_MASK ); // sets entity 1's mask to 3 [0..011]
-// System1 will NOT be executed on this entity ^
-
-manager.SetEntityMask( 2u, COMP1_MASK | COMP2_MASK | COMP3_MASK ); // sets entity 2's mask to 7 [0..111]
-// System1 will be executed on this entity ^
-```
-
-As you can see, the entity mask does not have to match the system mask exactly. The system will be executed if all of the system mask bits are set in the entity mask.
+The system delay determines wether the system is an update system or a render system. Any system with a delay greater than 0 are Update systems and all systems with a delay of 0 are render systems.

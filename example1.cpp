@@ -12,7 +12,7 @@ public:
 // ----------------------------------------------------------------------------
 class EntityRenderSystem : public Entitatem::System { 
 public:
-    EntityRenderSystem() : Entitatem::System( 0u ) { AddRequirement( "health" ); };
+    EntityRenderSystem() : Entitatem::System( 0u ) { SetRequirement( "health" ); };
     void Execute( const size_t& a_id ) { std::cout << "EntityRenderSystem::Execute( " << a_id << " )\n"; };
 
 };
@@ -28,7 +28,7 @@ public:
 // ----------------------------------------------------------------------------
 class EntityUpdateSystem : public Entitatem::System {
 public:
-    EntityUpdateSystem() : Entitatem::System( 1u ) { AddRequirement( "health" ); };
+    EntityUpdateSystem() : Entitatem::System( 1u ) { SetRequirement( "health level" ); };
     void Execute( const size_t& a_id ) { std::cout << "EntityUpdateSystem::Execute( " << a_id << " )\n"; };
 
 };
@@ -91,8 +91,7 @@ size_t CreateEntity( Entitatem::Manager& a_manager ) {
 
     if ( id < a_manager.MAX_ENTITIES ) {
         try {
-            a_manager.SetEntityFlag( "health", id, true );
-            a_manager.SetEntityFlag( "level", id, true );
+            a_manager.SetEntityFlag( "health level", id, true );
             
             a_manager.Get< float >( "health", id ) = 100.0f;
             a_manager.Get< int >( "level", id ) = 3;

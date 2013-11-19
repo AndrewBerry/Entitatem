@@ -1,4 +1,5 @@
 #include <Entitatem/Entitatem.hpp>
+#include <iostream>
 
 namespace Entitatem {
 
@@ -21,9 +22,16 @@ namespace Entitatem {
     };
     
     // ------------------------------------------------------------------------
-    void System::AddRequirement( const std::string& a_key ) {
-        size_t hash = std::hash< std::string >()( a_key );
-        m_requirements.push_back( hash );
+    void System::SetRequirement( const std::string& a_key, const Pattern& a_patternType ) {
+        m_patternType = a_patternType;
+
+        std::istringstream keyStr( a_key );
+        std::string key;
+        while ( !keyStr.eof() ) {
+            keyStr >> key;
+            size_t hash = std::hash< std::string >()( key );
+            m_requirements.push_back( hash );
+        };
     };
 
     // ------------------------------------------------------------------------
@@ -67,14 +75,19 @@ namespace Entitatem {
 
     // ------------------------------------------------------------------------
     void Manager::SetEntityFlag( const std::string& a_key, const size_t& a_id, const bool& a_value ) {
-        size_t hash = std::hash< std::string >()( a_key );
+        std::istringstream keyStr( a_key );
+        std::string key;
+        while ( !keyStr.eof() ) {
+            keyStr >> key;
+            size_t hash = std::hash< std::string >()( key );
 
-        auto iter = m_components.find( hash );
-        if ( iter == m_components.end() ) {
-            throw "Could not set entity flag - Component does not exist.";
+            auto iter = m_components.find( hash );
+            if ( iter == m_components.end() ) {
+                throw "Could not set entity flag - Component does not exist.";
+            };
+
+            m_entityMasks[ a_id ][ iter->second.m_maskId ] = 1;
         };
-
-        m_entityMasks[ a_id ][ iter->second.m_maskId ] = 1;
     };
     
     // ------------------------------------------------------------------------
@@ -98,13 +111,40 @@ namespace Entitatem {
 
             system->GetFrameSkip() = 0u;
             if ( system->GetRequirements().size() > 0u ) {
+                std::bitset< MAX_COMPONENTS > systemMask = GenerateSystemMask( system->GetRequirements() );
+
                 for ( auto ei = m_entitiesInUse.begin(); ei != m_entitiesInUse.end(); ++ei ) {
-                    system->Execute( *ei );
+                    if ( MasksMatch( system->GetPatternType(), systemMask, m_entityMasks[ *ei ] ) ) {
+                        system->Execute( *ei );
+                    };
                 };
             } else {
                 system->Execute();
             };
         };
+    };
+    
+    // ------------------------------------------------------------------------
+    std::bitset< MAX_COMPONENTS > Manager::GenerateSystemMask( const std::vector< size_t >& a_hash ) const {
+        std::bitset< MAX_COMPONENTS > resultBits;
+
+        for ( auto hit = a_hash.begin(); hit != a_hash.end(); ++hit ) {
+            auto result = m_components.find( *hit );
+
+            if ( result != m_components.end() ) {
+                resultBits[ result->second.m_maskId ] = 1;
+            } else {
+                throw "Could not generate system mask - Component does not exist.";
+            };
+        };
+
+        return resultBits;
+    };
+    
+    // ------------------------------------------------------------------------
+    bool Manager::MasksMatch( const System::Pattern& a_patternType, const std::bitset< MAX_COMPONENTS >& a_sys, const std::bitset< MAX_COMPONENTS >& a_ent ) const {
+        const std::bitset< MAX_COMPONENTS >& rhs = ( a_patternType == System::MIN ) ? a_sys : a_ent;
+        return ( a_sys & a_ent ) == rhs;
     };
 
 };

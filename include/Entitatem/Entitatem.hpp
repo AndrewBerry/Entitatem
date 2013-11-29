@@ -30,6 +30,8 @@ namespace Entitatem {
         inline const Pattern&                   GetPatternType() const { return m_patternType; };
         inline const size_t&                    GetDelay() const { return m_delay; };
         size_t&                                 GetFrameSkip() { return m_frameSkip; };
+        
+        std::bitset< MAX_COMPONENTS >           m_mask;
 
     private:
         std::vector< size_t >                   m_requirements;
@@ -51,7 +53,7 @@ namespace Entitatem {
         // Entities
         size_t                                  GetNewEntity();
         void                                    DestroyEntity( const size_t& a_id );
-        void                                    SetEntityFlag( const std::string& a_key, const size_t& a_id, const bool& a_value );
+        void                                    SetEntityMask( const std::string& a_key, const size_t& a_id, const bool& a_value );
         
         // Components
         template < class T >

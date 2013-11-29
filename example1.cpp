@@ -57,14 +57,9 @@ int main() {
     CreateEntity( m );
     CreateEntity( m );
 
-    for ( size_t i = 0u; i < 4u; ++i ) {
-        std::cout << "# FRAME " << i << '\n';
-        std::cout << "=== Update: \n";
+    for ( size_t i = 0u; i < 5u; ++i ) {
         m.Update();
-        std::cout << "=== Render: \n";
         m.Render();
-
-        std::cout << "\n\n";
     };
 
     std::cin.get();
@@ -91,7 +86,7 @@ size_t CreateEntity( Entitatem::Manager& a_manager ) {
 
     if ( id < a_manager.MAX_ENTITIES ) {
         try {
-            a_manager.SetEntityFlag( "health level", id, true );
+            a_manager.SetEntityMask( "health level", id, true );
             
             a_manager.Get< float >( "health", id ) = 100.0f;
             a_manager.Get< int >( "level", id ) = 3;

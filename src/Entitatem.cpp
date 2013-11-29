@@ -74,7 +74,9 @@ namespace Entitatem {
     };
 
     // ------------------------------------------------------------------------
-    void Manager::SetEntityFlag( const std::string& a_key, const size_t& a_id, const bool& a_value ) {
+    void Manager::SetEntityMask( const std::string& a_key, const size_t& a_id, const bool& a_value ) {
+        m_entityMasks[ a_id ].reset();
+
         std::istringstream keyStr( a_key );
         std::string key;
         while ( !keyStr.eof() ) {
@@ -86,12 +88,14 @@ namespace Entitatem {
                 throw "Could not set entity flag - Component does not exist.";
             };
 
-            m_entityMasks[ a_id ][ iter->second.m_maskId ] = 1;
+            m_entityMasks[ a_id ][ iter->second.m_maskId ] = a_value;
         };
     };
     
     // ------------------------------------------------------------------------
     void Manager::RegisterSystem( System* a_system ) {
+        a_system->m_mask = GenerateSystemMask( a_system->GetRequirements() );
+
         std::vector< System* >& systems = ( a_system->GetDelay() == 0u ) ? m_systemsRender : m_systemsUpdate;
         systems.push_back( a_system );
     };
@@ -111,10 +115,8 @@ namespace Entitatem {
 
             system->GetFrameSkip() = 0u;
             if ( system->GetRequirements().size() > 0u ) {
-                std::bitset< MAX_COMPONENTS > systemMask = GenerateSystemMask( system->GetRequirements() );
-
                 for ( auto ei = m_entitiesInUse.begin(); ei != m_entitiesInUse.end(); ++ei ) {
-                    if ( MasksMatch( system->GetPatternType(), systemMask, m_entityMasks[ *ei ] ) ) {
+                    if ( MasksMatch( system->GetPatternType(), system->m_mask, m_entityMasks[ *ei ] ) ) {
                         system->Execute( *ei );
                     };
                 };
